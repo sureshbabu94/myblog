@@ -19,6 +19,7 @@ from blog import views
 #from blog.views import signupform
 
 urlpatterns = [
+    path("update_server/", views.update, name="update"),
     path('admin/', admin.site.urls),
     path('',views.postlist, name='home'),
     path('signup/', views.signupform, name='signupform'),
