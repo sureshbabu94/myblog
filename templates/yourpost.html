@@ -1,0 +1,89 @@
+{% extends "blogbase.html" %} 
+{% block content %}
+<style>
+    body {
+        font-family: "Roboto", sans-serif;
+        font-size: 18px;
+        background-color: #fdfdfd;
+    }
+    
+    .head_text {
+        color: white;
+    }
+    
+    .card {
+        box-shadow: 0 16px 48px #E3E7EB;
+    }
+
+    .header-list{
+        list-style-type: none;
+        display: block;
+    }
+
+    a[class='head-link']{
+        text-decoration:none;
+        color:red;
+    }
+</style>
+
+<header class="masthead">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class=" col-md-8 col-md-10 mx-auto">
+                <div class="site-heading">
+                    {% if user.is_authenticated %}
+                        <ul class='header-list'>
+                            <li>Welcome: {{ user.username }} </li>
+                            <li><a class="head-link" href="{% url 'logoutapp' %}">Logout</a></li>
+                            <li><a class="head-link" href="{% url 'change_password' %}">change your password</a></li>
+                            <li><a class="head-link" href="{% url 'createpost' %}">Create Your Post here</a></li>
+                            <li><a class="head-link" href="{% url 'home' %}">Public Posts</a></li>
+                        </ul>
+                    {% comment addpost %}
+                    <!-- <p><a href="{% url 'addpost' %}">Create Your Post here</a></p> -->
+                    {% endcomment %}
+                    {% else %}
+                        <ul class='header-list'>
+                            <li>Welcome: Guest</li>
+                            <li><a class="head-link" href="/accounts/login/">Login</a></li>
+                            <li><a class="head-link" href="{% url 'signupform' %}">Sign Up</a></li>
+                        </ul>
+                    {% endif %}
+                    <!--
+                    <h3 class=" site-heading my-4 mt-3 text-white"> Welcome to iLOG </h3>
+                    <p class="text-light">We Love Django As much as you dO
+                    </p>
+                -->
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container">
+    <div class="row">
+        <!-- Blog Entries Column -->
+        <div class="col-md-8 mt-3 left">
+            <h2>iLOG Private Posts:</h2>
+            {% for posted in your_post_list %}
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title">{{ posted.title }}</h2>
+                    <p class="card-text text-muted h6">{{ posted.author }} | {{ posted.created_on}} </p>
+                    <p class="card-text"><q><cite>{{posted.content }}</cite></q></p>
+                    
+                    {% comment %}
+                    <!--<a href="{% url 'post_detail' post.slug  %}" class="btn btn-primary">Read More </a>-->
+                    {% endcomment %}
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+        {% comment xyz %}
+        {% block sidebar %} {% include 'sidebar.html' %} {% endblock sidebar %}
+        {% endcomment %}
+    </div>
+    
+</div>
+{%endblock%}

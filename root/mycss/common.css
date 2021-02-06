@@ -1,0 +1,17 @@
+body{
+    background-image: url('/static/myimg/dark.jpg');
+    color: white;
+}
+li[class='error'] {
+    color: red;
+}
+
+p,h1,h2,h3,h4,h5{
+    color:white;
+}
+
+ul[class='errorlist'] li {
+    color:red;
+    background-color: yellow;
+    
+}

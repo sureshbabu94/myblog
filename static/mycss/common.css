@@ -1,0 +1,43 @@
+body{
+    background-image: url('/static/myimg/dark.jpg');
+    color: white;
+}
+li[class='error'] {
+    color: red;
+}
+
+p,h1,h2,h3,h4,h5{
+    color:white;
+}
+
+ul[class='errorlist'] li {
+    color:red;
+   /* background-color: yellow; */
+    
+}
+
+#header {
+    width: auto;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 40px;
+    background: #417690;
+    color: #ffc;
+    overflow: hidden;
+
+}
+
+#footer {
+    width: auto;
+    height: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 40px;
+    background: #417690;
+    color: #ffc;
+    overflow: hidden;
+
+}

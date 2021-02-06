@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+    <meta charset="UTF-8">
+    <title>Post List</title>
+    <link rel="stylesheet" href="{% static 'mycss/common.css' %}">
+</head>
+
+<body>
+  <div>
+    <h1>Public Post</h1>
+    {% for posted in post_list %}
+    </div>
+        <h3>Title: {{ posted.title }} </h3>
+        <h4>Author: {{ posted.author }} Created:{{ posted.created_on }}</h4>
+        <h4>Post:</h4>
+        <p>{{ posted.content }}</p>
+        <hr>
+    </div>  
+
+    {% endfor %}
+  </div>
+  
+
+  
+</body>
+</html>

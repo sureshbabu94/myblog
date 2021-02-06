@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<h2>Create Your iLOG Account</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ formfields|crispy }}
+    <button type="submit" class="btn btn-success">Sign In</button>
+  </form>
+{% endblock %}
