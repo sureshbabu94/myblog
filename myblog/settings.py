@@ -57,7 +57,7 @@ MIDDLEWARE = [
     'blog.middlewares.RoleMiddleware' ,
 ]
 
-ROOT_URLCONF = 'proj.urls'
+ROOT_URLCONF = 'myblog.urls'
 
 TEMPLATES = [
     {
@@ -75,7 +75,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'proj.wsgi.application'
+WSGI_APPLICATION = 'myblog.wsgi.application'
 
 
 # Database
