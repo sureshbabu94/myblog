@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, Http404, redirect, get_object_or_404, get_list_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
@@ -10,19 +10,23 @@ from django.contrib import messages
 from blog.forms import *
 import git
 from django.views.decorators.csrf import csrf_exempt
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+
+
 # Create your views here.
 
 
+"""
 ''' Update Server'''
 @csrf_exempt
 def update(request):
     if request.method == "POST":
         '''
-        pass the path of the diectory where your project will be 
+        pass the path of the diectory where your project will be
         stored on PythonAnywhere in the git.Repo() as parameter.
         Here the name of my directory is "test.pythonanywhere.com"
         '''
-        repo = git.Repo("sureshbabu94.pythonanywhere.com/") 
+        repo = git.Repo("sureshbabu94.pythonanywhere.com/")
         origin = repo.remotes.origin
 
         origin.pull()
@@ -30,7 +34,7 @@ def update(request):
         return HttpResponse("Updated code on PythonAnywhere")
     else:
         return HttpResponse("Couldn't update the code on PythonAnywhere")
-
+"""
 
 
 
@@ -79,14 +83,14 @@ def signupform(request):
             #return render(request,'signup.html',{'formfields':form})
     else:
         form = UserForm()
-    return render(request,'signup.html',{'formfields':form}) 
+    return render(request,'signup.html',{'formfields':form})
 
 
 ''' Logout Functionality '''
 
 def logoutapp(request):
     print("logging out and clearing sessions", request.user.username)
-    
+
     request.session.clear_expired()
     logout(request)
     #messages.INFO('Logged Out Successfully')
@@ -112,17 +116,31 @@ def yourpost(request):
     paginator = Paginator(your_post_list, 2) # Show 25 contacts per page.
 
     page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)    
+    page_obj = paginator.get_page(page_number)
     return render(request, 'yourpost.html',{'your_post_list':your_post_list,'page_obj': page_obj})
 
 
 
-''' Public Posts and Home Page Functionality '''
+''' Public Posts and Home Page Functionality with no paginator(Not Active)
 
 def postlist(request):
     post_list = Dummy.objects.filter(status=1).order_by('-created_on')
-    
+
     return render(request, 'index.html',{'post_list':post_list})
+''' 
+''' Get post using slug field'''
+
+def postdetail(request, slug):
+   # detail = get_object_or_404(Dummy, slug=slug)
+    try:
+        
+        detail = Dummy.objects.filter(status=1).filter(slug=slug).order_by('-created_on')
+        print("Got post using slug")
+    except Dummy.DoesNotExist:
+        raise Http404
+    
+
+    return render(request, 'postdetail.html',{'detail':detail})
 
 
 ''' Class based Post Creation Form(Not Active) '''
@@ -163,3 +181,21 @@ def createrpost(request):
     else:
         form=DummyForm()
     return render(request,'postform.html',{'form':form})
+
+''' Public Posts and Home Page Functionality with paginator(Active) '''
+
+
+def pagelist(request):
+    object_list = Dummy.objects.filter(status=1).order_by('-created_on')
+    paginator = Paginator(object_list, 2) # Show 25 contacts per page.
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request,'paginator.html',{'page_obj': page_obj})
+
+def about(request):
+    return render(request,'about.html',{})
+
+def contact(request):
+    return render(request,'contact.html',{})

@@ -16,23 +16,35 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from blog import views
+
 #from blog.views import signupform
 
 urlpatterns = [
-    path("update_server/", views.update, name="update"),
+   # path("update_server/", views.update, name="update"),
     path('admin/', admin.site.urls),
-    path('',views.postlist, name='home'),
+    # Home page with paginator
+    path('', views.pagelist, name='home'),
+    #Home page without paginator (Not Active)
+    #path('',views.postlist, name='home'),
+    #Untouched paginator backup
+    # path('pagelist/',views.pagelist, name='pagelist'),
     path('signup/', views.signupform, name='signupform'),
     path('logoutapp/', views.logoutapp, name='logoutapp'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('change_password/', views.change_password, name='change_password'),
     path('loginapp/',views.loginapp,name='loginapp'),
     #public post
-    path('postlist/', views.postlist, name='postlist'),
+    # path('postlist/', views.postlist, name='postlist'),
+    #Retrieve post with slug
+    path('post/<slug:slug>/', views.postdetail, name='postdetail'),
     #private post
     path('yourpost/',views.yourpost, name='your_post'),
     #path('createpost/',views.CreatePost.as_view(), name='createpost'),
     path('createpost/',views.createrpost,name='createpost'),
     
+    path('about/',views.about, name='about'),
+    path('contact/',views.contact, name='contact'),
+
+
 
 ]

@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'e$_=n^1z36cj12rmp2b0c-620b&@&cs(wk8)wab!&(yk$=_+5j'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['sureshbabu94.pythonanywhere.com',]
+ALLOWED_HOSTS = ['sureshbabu94.pythonanywhere.com','localhost']
 
 
 # Application definition
@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     #'django_crispy_forms',
     'blog',
     'crispy_forms',
-    
+
 
 ]
 
@@ -130,7 +130,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'root')
 
 
-
+ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 
 

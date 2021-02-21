@@ -1,0 +1,7 @@
+<ul class='header-list'>
+    <li>Welcome: {{ user.username }} </li>
+    <li><a class="head-link" href="{% url 'logoutapp' %}">Logout</a></li>
+    <li><a class="head-link" href="{% url 'change_password' %}">change your password</a></li>
+    <li><a class="head-link" href="{% url 'createpost' %}">Create Your Post here</a></li>
+    <li><a class="head-link" href="{% url 'your_post' %}">Your Post</a></li>
+</ul>
