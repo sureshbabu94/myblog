@@ -60,22 +60,39 @@
     <div class="row">
         <!-- Blog Entries Column -->
         <div class="col-md-8 mt-3 left">
-            <h2>iLOG Private Posts:</h2>
-            {% for posted in your_post_list %}
+            <h2>Djangolog Private Posts:</h2>
+            {% for posted in page_obj %}
             <div class="card mb-4">
                 <div class="card-body">
                     <h2 class="card-title">{{ posted.title }}</h2>
                     <p class="card-text text-muted h6">{{ posted.author }} | {{ posted.created_on}} </p>
-                    <p class="card-text"><q><cite>{{posted.content }}</cite></q></p>
+                    <p class="card-text"><q><cite>{{posted.content }}</cite></q></p><br>
                     <button type="button" class="btn btn-warning"><a class="edit" href="/post/{{posted.id}}/edit/">Edit</a></button>
                     <button type="button" class="btn btn-danger"><a class="delete" href="/post/{{posted.id}}/delete/">Delete</a></button>
-                    {% comment %}
-                    <!--<a href="{% url 'post_detail' post.slug  %}" class="btn btn-primary">Read More </a>-->
-                    {% endcomment %}
+                    <br>
                 </div>
-
             </div>
+            {% comment %}
+            <!--<a href="{% url 'post_detail' post.slug  %}" class="btn btn-primary">Read More </a>-->
+            {% endcomment %}
             {% endfor %}
+            <div class="pagination">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                    {% endif %}
+            
+                    <span class="current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+            
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">next</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div> 
         </div>
         {% comment xyz %}
         {% block sidebar %} {% include 'sidebar.html' %} {% endblock sidebar %}

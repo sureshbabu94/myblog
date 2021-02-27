@@ -56,11 +56,13 @@
         <div class="col-md-8 mt-3 left">
             <h2>Djangolog Public Posts:</h2>
             {% for posted in page_obj %}
-    
-            <h2 class="card-title">{{ posted.title }}</h2>
-            <p class="card-text text-muted h6">{{ posted.author }} | {{ posted.created_on}} </p>
-            <p class="card-text"><q><cite>{{posted.content }}</cite></q></p>
-    
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title">{{ posted.title }}</h2>
+                    <p class="card-text text-muted h6">{{ posted.author }} | {{ posted.created_on}} </p>
+                    <p class="card-text"><q><cite>{{posted.content }}</cite></q></p>
+                </div>
+            </div>
             {% endfor %}
             <div class="pagination">
                 <span class="step-links">
