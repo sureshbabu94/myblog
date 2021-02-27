@@ -199,3 +199,31 @@ def about(request):
 
 def contact(request):
     return render(request,'contact.html',{})
+
+
+''' Edit Private Post '''
+@login_required(login_url='/accounts/login/')
+@permission_required('blog.add_post', raise_exception=True)
+def editpost(request, id):
+    try:
+        post_id = Dummy.objects.filter(author=request.user).get(id=id)
+    except Dummy.DoesNotExist:
+        return redirect('your_post')
+    form = DummyForm(request.POST or None, instance = post_id)
+    if form.is_valid():
+       form.save()
+       return redirect('your_post')
+    return render(request,'postform.html',{'form':form})
+
+
+''' Delete Private Post '''
+@login_required(login_url='/accounts/login/')
+@permission_required('blog.add_post', raise_exception=True)
+def delete_post(request, id):
+    
+    try:
+        del_obj = Dummy.objects.filter(author=request.user).get(id = id)
+    except Dummy.DoesNotExist:
+        return redirect('your_post')
+    del_obj.delete()
+    return redirect('your_post')

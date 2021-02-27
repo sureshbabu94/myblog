@@ -20,6 +20,12 @@
         display: block;
     }
 
+    a[class='edit']{
+        color: white;
+    }
+    a[class='delete']{
+        color: white;
+    }
     a[class='head-link']{
         text-decoration:none;
         color:red;
@@ -33,22 +39,12 @@
             <div class=" col-md-8 col-md-10 mx-auto">
                 <div class="site-heading">
                     {% if user.is_authenticated %}
-                        <ul class='header-list'>
-                            <li>Welcome: {{ user.username }} </li>
-                            <li><a class="head-link" href="{% url 'logoutapp' %}">Logout</a></li>
-                            <li><a class="head-link" href="{% url 'change_password' %}">change your password</a></li>
-                            <li><a class="head-link" href="{% url 'createpost' %}">Create Your Post here</a></li>
-                            <li><a class="head-link" href="{% url 'home' %}">Public Posts</a></li>
-                        </ul>
+                        {% include 'loggednav.html' %}
                     {% comment addpost %}
                     <!-- <p><a href="{% url 'addpost' %}">Create Your Post here</a></p> -->
                     {% endcomment %}
                     {% else %}
-                        <ul class='header-list'>
-                            <li>Welcome: Guest</li>
-                            <li><a class="head-link" href="/accounts/login/">Login</a></li>
-                            <li><a class="head-link" href="{% url 'signupform' %}">Sign Up</a></li>
-                        </ul>
+                        {% include 'nonloggednav.html' %}   
                     {% endif %}
                     <!--
                     <h3 class=" site-heading my-4 mt-3 text-white"> Welcome to iLOG </h3>
@@ -71,7 +67,8 @@
                     <h2 class="card-title">{{ posted.title }}</h2>
                     <p class="card-text text-muted h6">{{ posted.author }} | {{ posted.created_on}} </p>
                     <p class="card-text"><q><cite>{{posted.content }}</cite></q></p>
-                    
+                    <button type="button" class="btn btn-warning"><a class="edit" href="/post/{{posted.id}}/edit/">Edit</a></button>
+                    <button type="button" class="btn btn-danger"><a class="delete" href="/post/{{posted.id}}/delete/">Delete</a></button>
                     {% comment %}
                     <!--<a href="{% url 'post_detail' post.slug  %}" class="btn btn-primary">Read More </a>-->
                     {% endcomment %}

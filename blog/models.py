@@ -65,7 +65,7 @@ class Dummy(models.Model):
     updated_on = models.DateTimeField(auto_now= True)
     content = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
-    status = models.IntegerField(choices=STATUS, default=0, help_text='Publish-will publish post in this blog, Draft-will not publish post in this blog')
+    status = models.IntegerField(choices=STATUS, default=0, help_text='Publish-will publish your post in Public blog, Draft-will publish your post in your private blog')
 
     class Meta:
         ordering = ['-created_on']

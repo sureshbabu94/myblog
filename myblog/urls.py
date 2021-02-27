@@ -37,6 +37,10 @@ urlpatterns = [
     # path('postlist/', views.postlist, name='postlist'),
     #Retrieve post with slug
     path('post/<slug:slug>/', views.postdetail, name='postdetail'),
+    #Edit Private Post
+    path('post/<int:id>/edit/', views.editpost, name='editpost'),
+    #Delete Private Post
+    path('post/<int:id>/delete/', views.delete_post, name='deletepost'),
     #private post
     path('yourpost/',views.yourpost, name='your_post'),
     #path('createpost/',views.CreatePost.as_view(), name='createpost'),
