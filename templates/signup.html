@@ -4,7 +4,9 @@
 <h2>Create Your Djangolog Account</h2>
   <form method="post">
     {% csrf_token %}
+    <p><a href="{% url 'login' %}">Already have Existing account?</a></p>
     {{ formfields|crispy }}
     <button type="submit" class="btn btn-success">Sign In</button>
+    
   </form>
 {% endblock %}

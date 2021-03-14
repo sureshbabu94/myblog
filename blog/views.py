@@ -113,6 +113,8 @@ def loginapp(request):
 def yourpost(request):
     your_post_list = Dummy.objects.filter(author=request.user).order_by('-created_on')
 
+   
+
     paginator = Paginator(your_post_list, 2) # Show 25 contacts per page.
 
     page_number = request.GET.get('page')
@@ -136,17 +138,22 @@ def postdetail(request, slug):
         
         detail = Dummy.objects.filter(status=1).filter(slug=slug).order_by('-created_on')
         print("Got post using slug")
+        for x in detail:
+            slug_obj = x.id
     except Dummy.DoesNotExist:
         raise Http404
-    
+    try:
+        comments = Comments.objects.filter(post=slug_obj)
+    except Comments.DoesNotExist:
+        print("No comments")
 
-    return render(request, 'postdetail.html',{'detail':detail})
+    return render(request, 'postdetail.html',{'detail':detail, 'comments':comments})
 
 
 ''' Class based Post Creation Form(Not Active) '''
-
+'''
 class CreatePost(LoginRequiredMixin,PermissionRequiredMixin, generic.CreateView):
-    '''Only Authenticated Authors can create Posts in data base'''
+   # Only Authenticated Authors can create Posts in data base
     #LoginRequired
     login_url='/accounts/login/'
 
@@ -159,7 +166,7 @@ class CreatePost(LoginRequiredMixin,PermissionRequiredMixin, generic.CreateView)
     success_url='/'
     model=Post
     fields=('title','author','content','status')
-
+'''
 
 
 ''' Function based Create Post(Dummy) Form '''
@@ -168,7 +175,7 @@ class CreatePost(LoginRequiredMixin,PermissionRequiredMixin, generic.CreateView)
 @permission_required('blog.add_post', raise_exception=True)
 def createrpost(request):
     if request.method=='POST':
-        form = DummyForm(request.POST)
+        form = DummyForm(request.POST, request.FILES)
         if form.is_valid():
             obj=form.save(commit=False)
             obj.author=request.user
@@ -188,6 +195,7 @@ def createrpost(request):
 def pagelist(request):
     object_list = Dummy.objects.filter(status=1).order_by('-created_on')
     paginator = Paginator(object_list, 2) # Show 25 contacts per page.
+   # comments=Comment.objects.filter(post=object_list).order_by('-created_on')
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -209,11 +217,12 @@ def editpost(request, id):
         post_id = Dummy.objects.filter(author=request.user).get(id=id)
     except Dummy.DoesNotExist:
         return redirect('your_post')
-    form = DummyForm(request.POST or None, instance = post_id)
+    form = EditDummyForm(request.POST or None, request.FILES or None, instance = post_id)
     if form.is_valid():
-       form.save()
-       return redirect('your_post')
-    return render(request,'postform.html',{'form':form})
+        print("uploaded")
+        form.save()
+        return redirect('your_post')
+    return render(request,'editform.html',{'form':form})
 
 
 ''' Delete Private Post '''
@@ -227,3 +236,29 @@ def delete_post(request, id):
         return redirect('your_post')
     del_obj.delete()
     return redirect('your_post')
+
+
+
+@login_required(login_url='/accounts/login/')
+def postcomment(request, slug):
+    try:
+        dummy_id = Dummy.objects.get(slug=slug)
+        print("Post Found")
+    except Dummy.DoesNotExist:
+        print("Post Not Found")
+        return redirect('your_post')
+    form_id = dummy_id.id
+    print("ID of POST is", form_id)
+    form = CommentForm(request.POST)
+    
+    if form.is_valid():
+        obj=form.save(commit=False)
+        obj.post=dummy_id
+        print("form post id is",obj.post)
+        obj.user=request.user
+        print("obj.user is", obj.user)
+        obj.save()
+        print('Comment saved sucessfully')
+        return redirect('/')
+    
+    return render(request,'commentform.html',{'form':form})

@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from blog import views
+from django.conf import settings
+from django.conf.urls.static import static 
 
 #from blog.views import signupform
 
@@ -36,7 +38,7 @@ urlpatterns = [
     #public post
     # path('postlist/', views.postlist, name='postlist'),
     #Retrieve post with slug
-    path('post/<slug:slug>/', views.postdetail, name='postdetail'),
+    path('postdetail/<slug:slug>/', views.postdetail, name='postdetail'),
     #Edit Private Post
     path('post/<int:id>/edit/', views.editpost, name='editpost'),
     #Delete Private Post
@@ -48,7 +50,12 @@ urlpatterns = [
     
     path('about/',views.about, name='about'),
     path('contact/',views.contact, name='contact'),
+    path('comment/<slug:slug>/add/', views.postcomment, name='addcomment'),
 
 
 
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                              document_root=settings.MEDIA_ROOT)
