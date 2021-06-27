@@ -18,6 +18,13 @@ from django.urls import path, include
 from blog import views
 from django.conf import settings
 from django.conf.urls.static import static 
+from django.contrib.sitemaps.views import sitemap
+from blog.sitemaps import PostSitemap
+
+sitemaps = {
+    "posts": PostSitemap,
+}
+
 
 #from blog.views import signupform
 
@@ -51,7 +58,7 @@ urlpatterns = [
     path('about/',views.about, name='about'),
     path('contact/',views.contact, name='contact'),
     path('comment/<slug:slug>/add/', views.postcomment, name='addcomment'),
-
+    path("sitemap.xml", sitemap, {"sitemaps": sitemaps}, name="sitemap"),
 
 
 ]

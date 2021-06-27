@@ -1,5 +1,6 @@
 {% extends "blogbase.html" %} 
 {% block content %}
+{% load tz %}
 <style>
     body {
         font-family: "Roboto", sans-serif;
@@ -64,8 +65,8 @@
             {% for posted in page_obj %}
             <div class="card mb-4">
                 <div class="card-body">
-                    <h2 class="card-title">{{ posted.title }}</h2>
-                    <p class="card-text text-muted h6">{{ posted.author }} | {{ posted.created_on}} </p>
+                    <h2 class="card-title">{{ posted.title|title }}</h2>
+                    <p class="card-text text-muted h6">{{ posted.author }} | {{ posted.created_on|localtime }} </p>
                     {% if posted.first_img %}
                     <div id="myCarousel" class="carousel slide" data-ride="carousel">
                         <!-- Indicators -->

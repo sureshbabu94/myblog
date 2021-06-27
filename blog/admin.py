@@ -23,3 +23,4 @@ class CommentAdmin(admin.ModelAdmin):
 '''
 #admin.site.register(Post, PostAdmin)
 admin.site.register(Comments)
+admin.site.register(Profile)

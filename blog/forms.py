@@ -13,14 +13,14 @@ class CommentForm(forms.ModelForm):
 class DummyForm(forms.ModelForm):
     class Meta:
         model=Dummy
-        fields=['title','content','first_img','second_img','third_img','status']
-        labels={'first_img':'Image1','second_img':'Image2','third_img':'Image3'}
+        fields=['title','content','status']
+       # labels={'first_img':'Image1','second_img':'Image2','third_img':'Image3'}
 
 class EditDummyForm(forms.ModelForm):
     class Meta:
         model=Dummy
-        fields=['title','content','first_img','second_img','third_img','status']
-        labels={'first_img':'Image1','second_img':'Image2','third_img':'Image3'}
+        fields=['title','content','status']
+       # labels={'first_img':'Image1','second_img':'Image2','third_img':'Image3'}
 
 class UserForm(UserCreationForm):
     first_name=forms.CharField(max_length=100, required=True)

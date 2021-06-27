@@ -8,15 +8,19 @@
     <title>Djangolog</title>
   </head>
   <body>
+    {% load static %}
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-8">
-          <h1 class="mt-2"><a href="{% url 'home' %}">Djangolog</a></h1>
+          <a class="navbar-brand" href="{% url 'home' %}">
+            <img alt="Djangolog" src="{% static 'myimg/logo.jpg' %}"
+            width=150" height="150"></img></a>
           <hr class="mt-0 mb-4">
           {% block content %}
           {% endblock %}
         </div>
       </div>
     </div>
+    
   </body>
 </html>

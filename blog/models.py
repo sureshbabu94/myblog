@@ -2,6 +2,8 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.conf import settings
 from uuid import uuid4
+import re
+from django.core.exceptions import ValidationError
 #from .models import Dummy
 
 # Create your models here.
@@ -14,9 +16,28 @@ STATUS = (
     (1,"Publish")
 )
 
+def validate_mobile(value):
+    num=re.search('[+][0-9]{1,3}[6789][0-9]{9}',value)
+    if num:
+        return value
+    else:
+        raise ValidationError('Enter valid mobile number starts with country code example: +917XXXXXXX6 ')
+
+def validate_email(value):
     
+    if value=='xyz@xyz.com':
+        raise ValidationError('Enter valid email id example: xyz@xyz.com ') 
+    else:
+        return value
+
 class Profile(models.Model):
-    pass
+    bio=models.TextField(max_length=120, blank=True, null=False)
+    location=models.CharField(max_length=100,blank=True, null=False)
+    first_name = models.CharField(max_length=150, blank=True, null=False)
+    last_name = models.CharField(max_length=150, blank=True, null=False)
+    email = models.EmailField(default='xyz@xyz.com',unique=True,validators=[validate_email])
+    mobile= models.CharField(max_length=14, blank=True, null=False,validators=[validate_mobile],help_text="Mobile should start with country code followed by mobile number ex: +918724567890")
+
 
 
 def path_and_rename(instance, filename):
@@ -36,9 +57,9 @@ class Dummy(models.Model):
     updated_on = models.DateTimeField(auto_now= True)
     content = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
-    first_img = models.ImageField(upload_to=path_and_rename) 
-    second_img = models.ImageField(upload_to=path_and_rename) 
-    third_img = models.ImageField(upload_to=path_and_rename) 
+   # first_img = models.ImageField(upload_to=path_and_rename,blank=True,null=True) 
+    #second_img = models.ImageField(upload_to=path_and_rename,blank=True,null=True) 
+    #third_img = models.ImageField(upload_to=path_and_rename,blank=True,null=True) 
     status = models.IntegerField(choices=STATUS, default=0, help_text='Publish-will publish your post in Public blog, Draft-will publish your post in your private blog')
 
     class Meta:
@@ -53,6 +74,11 @@ class Dummy(models.Model):
         self.slug = slugify(self.title)
         #this line below save every fields of the model instance
         super(Dummy, self).save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        from django.urls import reverse
+
+        return reverse("postdetail", kwargs={"slug": str(self.slug)})
 
 
     #def get_absoulte_url(self):
